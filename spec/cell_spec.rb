@@ -39,4 +39,30 @@ RSpec.describe Cell do
       expect(cell.empty?).to be false
     end
   end
+
+  describe "#place_ship" do
+    it "sets a ship to the cell" do
+      cruiser = Ship.new("Cruiser", 3)
+      cell = Cell.new("A2")
+      expect(cell.ship).to be nil
+      cell.place_ship(cruiser)
+      expect(cell.ship).to eq(cruiser)
+    end
+
+    it "will only accept Ship objects" do
+      cell = Cell.new("A2")
+      expect(cell.place_ship("Cruiser")).to be nil
+      expect(cell.ship).to be nil
+    end
+
+    it "will only accept one ship" do
+      cell = Cell.new("A2")
+      cruiser = Ship.new("Cruiser", 3)
+      destroyer = Ship.new("Destroyer", 2)
+      cell.place_ship(cruiser)
+      expect(cell.ship).to eq(cruiser)
+      expect(cell.place_ship(destroyer)).to be nil
+      expect(cell.ship).to eq(cruiser)
+    end
+  end
 end
