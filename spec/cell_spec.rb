@@ -23,4 +23,20 @@ RSpec.describe Cell do
       expect(cell.ship).to be nil
     end
   end
+
+  describe "#empty?" do
+    it "returns true if there is no ship" do
+      cell = Cell.new("A2")
+      expect(cell.ship).to be nil
+      expect(cell.empty?).to be true
+    end
+
+    it "returns false when a ship is present" do
+      cruiser = Ship.new("Cruiser", 3)
+      cell = Cell.new("A2")
+      expect(cell.empty?).to be true
+      cell.place_ship(cruiser)
+      expect(cell.empty?).to be false
+    end
+  end
 end
