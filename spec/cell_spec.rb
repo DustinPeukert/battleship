@@ -65,4 +65,37 @@ RSpec.describe Cell do
       expect(cell.ship).to eq(cruiser)
     end
   end
+
+  describe "#fire_upon" do
+    it "lets the ship know its been hit" do
+      cell = Cell.new("A2")
+      cruiser = Ship.new("Cruiser", 3)
+      cell.place_ship(cruiser)
+      expect(cruiser.health).to eq(3)
+      cell.fire_upon
+      expect(cruiser.health).to eq(2)
+    end
+
+    it "can only be fired upon once" do
+      cell = Cell.new("A2")
+      cruiser = Ship.new("Cruiser", 3)
+      cell.place_ship(cruiser)
+      expect(cruiser.health).to eq(3)
+      cell.fire_upon
+      expect(cruiser.health).to eq(2)
+      expect(cell.fire_upon).to be nil
+      expect(cruiser.health).to eq(2)
+    end
+  end
+
+  describe "#fired_upon?" do
+    it "checks if cell has been hit" do 
+      cell = Cell.new("A2")
+      cruiser = Ship.new("Cruiser", 3)
+      cell.place_ship(cruiser)
+      expect(cell.fired_upon?).to be false
+      cell.fire_upon
+      expect(cell.fired_upon?).to be true
+    end
+  end
 end
