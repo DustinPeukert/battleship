@@ -24,7 +24,7 @@ RSpec.describe Board do
     it "has keys that point to cell objects" do
       board = Board.new
       board.cells
-      board.cells.each do |cell|
+      board.cells.each do |coordinate, cell|
         expect(cell).to be_a(Cell)
       end
     end
