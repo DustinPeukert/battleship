@@ -13,4 +13,12 @@ class Cell
       false
     end
   end
+
+  def place_ship(ship)
+    if ship.is_a?(Ship) && @ship.nil?
+      @ship = ship
+    else
+      nil
+    end
+  end
 end
