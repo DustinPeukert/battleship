@@ -21,4 +21,8 @@ class Cell
       nil
     end
   end
+
+  def fire_upon
+    @ship.hit
+  end
 end
