@@ -1,5 +1,6 @@
 require_relative 'cell'
 
+
 class Board
   def initialize
     @cells = {
@@ -24,5 +25,9 @@ class Board
 
   def cells
     @cells
+  end
+
+  def valid_coordinate?(coordinate)
+    @cells.key?(coordinate)
   end
 end
