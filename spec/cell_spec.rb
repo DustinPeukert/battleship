@@ -11,6 +11,7 @@ RSpec.describe Cell do
       cell = Cell.new("B4")
       expect(cell.coordinate).to eq("B4")
       expect(cell.ship).to be nil
+      expect(cell.fired_upon).to be false
     end
 
     it "can have a different attribute" do
@@ -18,9 +19,10 @@ RSpec.describe Cell do
       expect(cell.coordinate).to eq("A2")
     end
 
-    it "has a default attribute" do
+    it "has default attributes" do
       cell = Cell.new("A2")
       expect(cell.ship).to be nil
+      expect(cell.fired_upon).to be false
     end
   end
 
