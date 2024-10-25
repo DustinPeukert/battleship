@@ -31,4 +31,8 @@ class Cell
       nil
     end
   end
+
+  def fired_upon?
+    @fired_upon
+  end
 end
