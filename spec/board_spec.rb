@@ -29,4 +29,16 @@ RSpec.describe Board do
       end
     end
   end
+
+  describe "#valid_coordinate?" do
+    it "returns true if coordinate exists" do
+      board = Board.new
+      expect(board.valid_coordinate?("A1")).to be true
+    end
+
+    it "returns false if coordinate does not exist" do
+      board = Board.new
+      expect(board.valid_coordinate?("A5")).to be false
+    end
+  end
 end
