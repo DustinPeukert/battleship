@@ -21,4 +21,8 @@ class Board
       "D4" => Cell.new("D4")
     }
   end
+
+  def cells
+    @cells
+  end
 end
