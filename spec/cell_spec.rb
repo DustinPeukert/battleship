@@ -98,4 +98,88 @@ RSpec.describe Cell do
       expect(cell.fired_upon?).to be true
     end
   end
+
+  describe "#render" do 
+    context "render without an argument" do
+      it "returns . if the cell has not been fired upon" do
+        cell = Cell.new("B4")
+        expect(cell.fired_upon?).to be false
+        expect(cell.render).to eq(".")
+      end
+
+      it "returns M if cell is fired upon and does not have a ship" do
+        cell = Cell.new("B4")
+        cell.fire_upon
+        expect(cell.fired_upon?).to be true
+        expect(cell.render).to eq("M")
+      end
+
+      it "returns H if cell has been fired upon and has a ship" do
+        cell = Cell.new("B4")
+        cruiser = Ship.new("Cruiser", 3)
+        cell.place_ship(cruiser)
+        cell.fire_upon
+        expect(cell.fired_upon?).to be true
+        expect(cell.render).to eq("H")
+      end
+
+      it "returns X if cell has been fired upon and has sunk" do 
+        cell = Cell.new("B4")
+        cruiser = Ship.new("Cruiser", 3)
+        cell.place_ship(cruiser)
+        cruiser.hit
+        cruiser.hit
+        expect(cruiser.sunk?).to be false
+        cell.fire_upon
+        expect(cruiser.sunk?).to be true
+        expect(cell.fired_upon?).to be true
+        expect(cell.render).to eq("X")
+      end
+    end
+
+    context "render with optional argument" do
+      it "returns S if cell has not been fired upon and cell has ship" do
+        cell = Cell.new("B4")
+        cruiser = Ship.new("Cruiser", 3)
+        cell.place_ship(cruiser)
+        expect(cell.fired_upon?).to be false
+        expect(cell.render(true)).to eq("S")
+      end
+
+      it "returns . if the cell has not been fired upon and does not have a ship" do
+        cell = Cell.new("B4")
+        expect(cell.fired_upon?).to be false
+        expect(cell.render(true)).to eq(".")
+      end
+
+      it "returns M if cell is fired upon and does not have a ship" do
+        cell = Cell.new("B4")
+        cell.fire_upon
+        expect(cell.fired_upon?).to be true
+        expect(cell.render(true)).to eq("M")
+      end
+
+      it "returns H if cell has been fired upon and has a ship" do
+        cell = Cell.new("B4")
+        cruiser = Ship.new("Cruiser", 3)
+        cell.place_ship(cruiser)
+        cell.fire_upon
+        expect(cell.fired_upon?).to be true
+        expect(cell.render(true)).to eq("H")
+      end
+
+      it "returns X if cell has been fired upon and has sunk" do 
+        cell = Cell.new("B4")
+        cruiser = Ship.new("Cruiser", 3)
+        cell.place_ship(cruiser)
+        cruiser.hit
+        cruiser.hit
+        expect(cruiser.sunk?).to be false
+        cell.fire_upon
+        expect(cruiser.sunk?).to be true
+        expect(cell.fired_upon?).to be true
+        expect(cell.render(true)).to eq("X")
+      end
+    end
+  end
 end
