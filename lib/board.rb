@@ -31,20 +31,18 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    if !coordinates.empty?
-      coordinates.sort_by! do |coordinate|
-        letter = coordinate[0]
-        number = coordinate[1].to_i
-        [letter, number]
-      end
+    return false if coordinates.empty?
+    return false unless coordinates.all? { |coordinate| valid_coordinate?(coordinate) }
+    return false if ship.length != coordinates.length
+    return false if coordinates.any? { |coordinate| !@cells[coordinate].empty? }
 
-      if (ship.length == coordinates.length) &&
-         (coordinates.all? { |coordinate| valid_coordinate?(coordinate) })
-          consecutive_coordinates?(coordinates)
-      else
-        false
-      end
+    coordinates.sort_by! do |coordinate|
+      letter = coordinate[0]
+      number = coordinate[1].to_i
+      [letter, number]
     end
+
+    consecutive_coordinates?(coordinates)
   end
 
   def consecutive_coordinates?(coordinates)
@@ -73,7 +71,6 @@ class Board
       coordinates.each do |coordinate|
         @cells[coordinate].place_ship(ship) 
       end
-      
       true
     else
       false
