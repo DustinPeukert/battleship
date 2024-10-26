@@ -40,7 +40,6 @@ class Cell
   end
 
   def render(debug = false)
-    debug = debug
     if !fired_upon? && !@ship.nil? && debug
       "S"
     elsif !fired_upon?
