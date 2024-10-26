@@ -83,4 +83,38 @@ RSpec.describe Board do
       expect(board.valid_placement?(submarine, ["B1", "A1"])).to be true
     end
   end
+
+  describe "#place" do
+    it "can place a ship in its cells" do 
+      board = Board.new
+      cruiser = Ship.new("Cruiser", 3)  
+      expect(board.place(cruiser, ["A1", "A2", "A3"])).to be true
+      expect(board.valid_placement?(cruiser, ["A1", "A2", "A3"])).to be true
+
+      cell_1 = board.cells["A1"]
+      cell_2 = board.cells["A2"]  
+      cell_3 = board.cells["A3"] 
+
+      expect(cell_1.ship).to eq(cruiser)
+      expect(cell_2.ship).to eq(cruiser)
+      expect(cell_3.ship).to eq(cruiser)
+      expect(cell_1.ship == cell_2.ship).to be true
+      expect(cell_2.ship == cell_3.ship).to be true
+    end
+
+    it "wont place ship if coordinates are not valid" do
+      board = Board.new
+      cruiser = Ship.new("Cruiser", 3)  
+      expect(board.place(cruiser, ["A1", "A2", "A4"])).to be false
+      expect(board.valid_placement?(cruiser, ["A1", "A2", "A4"])).to be false
+
+      cell_1 = board.cells["A1"]
+      cell_2 = board.cells["A2"]  
+      cell_3 = board.cells["A4"] 
+
+      expect(cell_1.ship).to be nil
+      expect(cell_2.ship).to be nil
+      expect(cell_3.ship).to be nil
+    end
+  end
 end
