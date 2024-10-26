@@ -31,12 +31,19 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    if (ship.length == coordinates.length) &&
-       (coordinates.all? { |coordinate| valid_coordinate?(coordinate) }) &&
-        !coordinates.empty?
-        consecutive_coordinates?(coordinates)
-    else
-      false
+    if !coordinates.empty?
+      coordinates.sort_by! do |coordinate|
+        letter = coordinate[0]
+        number = coordinate[1].to_i
+        [letter, number]
+      end
+
+      if (ship.length == coordinates.length) &&
+         (coordinates.all? { |coordinate| valid_coordinate?(coordinate) })
+          consecutive_coordinates?(coordinates)
+      else
+        false
+      end
     end
   end
 
