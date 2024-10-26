@@ -67,4 +67,16 @@ class Board
   def consecutive_letters?(letters)
     letters.each_cons(2).all? { |first, second| second.ord - first.ord == 1 }
   end
+
+  def place(ship, coordinates)
+    if valid_placement?(ship, coordinates)
+      coordinates.each do |coordinate|
+        @cells[coordinate].place_ship(ship) 
+      end
+      
+      true
+    else
+      false
+    end
+  end
 end
