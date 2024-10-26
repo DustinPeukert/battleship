@@ -67,6 +67,15 @@ RSpec.describe Board do
       expect(board.valid_placement?(submarine, ["C2", "D3"])).to eq(false)
     end
 
+    it "returns false if any coordinate already has a ship" do
+      board = Board.new
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2)
+      board.cells["A1"].place_ship(submarine)
+      expect(board.cells["A1"].ship).to eq(submarine)
+      expect(board.valid_placement?(cruiser, ["A1", "A2", "A3"])).to be false
+    end
+
     it "returns true if the coordinates are valid and consecutive" do
       board = Board.new
       cruiser = Ship.new("Cruiser", 3)
@@ -88,8 +97,8 @@ RSpec.describe Board do
     it "can place a ship in its cells" do 
       board = Board.new
       cruiser = Ship.new("Cruiser", 3)  
-      expect(board.place(cruiser, ["A1", "A2", "A3"])).to be true
       expect(board.valid_placement?(cruiser, ["A1", "A2", "A3"])).to be true
+      expect(board.place(cruiser, ["A1", "A2", "A3"])).to be true
 
       cell_1 = board.cells["A1"]
       cell_2 = board.cells["A2"]  
@@ -105,8 +114,8 @@ RSpec.describe Board do
     it "wont place ship if coordinates are not valid" do
       board = Board.new
       cruiser = Ship.new("Cruiser", 3)  
-      expect(board.place(cruiser, ["A1", "A2", "A4"])).to be false
       expect(board.valid_placement?(cruiser, ["A1", "A2", "A4"])).to be false
+      expect(board.place(cruiser, ["A1", "A2", "A4"])).to be false
 
       cell_1 = board.cells["A1"]
       cell_2 = board.cells["A2"]  
