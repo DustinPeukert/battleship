@@ -76,4 +76,18 @@ class Board
       false
     end
   end
+
+  def render(debug = false)
+    cell_render = []
+
+    @cells.values.each do |cell|
+      cell_render << cell.render(debug)
+    end
+    
+    "  1 2 3 4 \n" +
+    "A #{cell_render[0]} #{cell_render[1]} #{cell_render[2]} #{cell_render[3]} \n" +
+    "B #{cell_render[4]} #{cell_render[5]} #{cell_render[6]} #{cell_render[7]} \n" +
+    "C #{cell_render[8]} #{cell_render[9]} #{cell_render[10]} #{cell_render[11]} \n" +
+    "D #{cell_render[12]} #{cell_render[13]} #{cell_render[14]} #{cell_render[15]} \n"
+  end
 end
