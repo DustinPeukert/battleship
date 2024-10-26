@@ -1,6 +1,5 @@
 require_relative 'cell'
 
-
 class Board
   def initialize
     @cells = {
@@ -29,5 +28,36 @@ class Board
 
   def valid_coordinate?(coordinate)
     @cells.key?(coordinate)
+  end
+
+  def valid_placement?(ship, coordinates)
+    if (ship.length == coordinates.length) &&
+       (coordinates.all? { |coordinate| valid_coordinate?(coordinate) }) &&
+        !coordinates.empty?
+        consecutive_coordinates?(coordinates)
+    else
+      false
+    end
+  end
+
+  def consecutive_coordinates?(coordinates)
+    letters = coordinates.map { |coordinate| coordinate[0] }
+    numbers = coordinates.map { |coordinate| coordinate[1].to_i }
+
+    if !consecutive_letters?(letters) && consecutive_numbers?(numbers)
+      true
+    elsif consecutive_letters?(letters) && !consecutive_numbers?(numbers)
+      true
+    else 
+      false
+    end
+  end
+
+  def consecutive_numbers?(numbers)
+    numbers.each_cons(2).all? { |first, second| second - first == 1 }
+  end
+
+  def consecutive_letters?(letters)
+    letters.each_cons(2).all? { |first, second| second.ord - first.ord == 1 }
   end
 end
