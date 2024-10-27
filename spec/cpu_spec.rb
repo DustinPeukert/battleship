@@ -92,4 +92,26 @@ RSpec.describe CPU do
       end
     end
   end
+
+  describe '#has_lost?' do
+    it 'knows it has lost when all its ships are sunk' do
+      cpu_board = Board.new
+      cpu = CPU.new(cpu_board)
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2)
+
+      cpu.place_ship(cruiser)
+      cpu.place_ship(submarine)
+
+      expect(cpu.has_lost?).to be false
+
+      cpu_board.cells.each do |coord, cell|
+        if cell.ship
+          cell.fire_upon
+        end
+      end
+
+      expect(cpu.has_lost?).to be true
+    end
+  end
 end
