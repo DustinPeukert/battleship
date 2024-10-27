@@ -74,4 +74,22 @@ RSpec.describe CPU do
       expect(tracked_coords.uniq.size).to eq(16)
     end
   end
+
+  describe '#fire_at' do
+    context 'this method incorporates the boards #valid_coordinate method' do
+      it 'can choose valid coordinates to fire upon' do
+        player_board = Board.new
+        cpu_board = Board.new
+        cpu = CPU.new(cpu_board)
+
+        3.times do
+          cpu.fire_at(player_board, cpu.choose_coordinate)
+        end
+
+        number = player_board.cells.count { |coord, cell| cell.fired_upon? == true}
+
+        expect(number).to eq(3)
+      end
+    end
+  end
 end
