@@ -51,4 +51,27 @@ RSpec.describe CPU do
       end
     end
   end
+
+  describe '#choose_coordinate' do ####
+    it 'chooses a random coordinate from existing board coordinates' do
+      cpu_board = Board.new
+      cpu = CPU.new(cpu_board)
+
+      coordinate = cpu.choose_coordinate
+      expect(cpu_board.cells.key?(coordinate)).to be true
+    end
+
+    it 'tracks already chosen coordinates and won\'t choose them again' do
+      cpu_board = Board.new
+      cpu = CPU.new(cpu_board)
+
+      expect(cpu.tracked_coords).to eq([])
+
+      16.times do
+        tracked_coords << cpu.choose_coordinate
+      end
+
+      expect(tracked_coords.uniq.size).to eq(16)
+    end
+  end
 end
