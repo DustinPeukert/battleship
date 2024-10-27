@@ -19,4 +19,36 @@ RSpec.describe CPU do
       expect(cpu.tracked_coords).to eq([])
     end
   end
+
+  describe '#place_ship' do
+    context '#place_ship incorporates the boards #valid_placement? method' do
+      it 'can choose valid placement for a ship' do
+        cpu_board = Board.new
+        cpu = CPU.new(cpu_board)
+        cruiser = Ship.new("Cruiser", 3)
+
+        expect(cpu.place_ship(cruiser)).to be true
+
+        ship_placed = cpu_board.cells.values.select { |cell| cell.ship == cruiser }
+    
+        expect(ship_placed.size).to eq(cruiser.length)
+      end
+
+      it 'can do this for multiple ships' do
+        cpu_board = Board.new
+        cpu = CPU.new(cpu_board)
+        cruiser = Ship.new("Cruiser", 3)
+        submarine = Ship.new("Submarine", 2)
+
+        expect(cpu.place_ship(cruiser)).to be true
+        expect(cpu.place_ship(submarine)).to be true
+
+        placed_cruiser = cpu_board.cells.values.select { |cell| cell.ship == cruiser }
+        placed_submarine = cpu_board.cells.values.select { |cell| cell.ship == submarine }
+    
+        expect(placed_cruiser.size).to eq(cruiser.length)
+        expect(placed_submarine.size).to eq(submarine.length)
+      end
+    end
+  end
 end
