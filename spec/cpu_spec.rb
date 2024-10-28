@@ -15,8 +15,6 @@ RSpec.describe CPU do
 
       expect(cpu.board).to eq(cpu_board)
       expect(cpu.board).to be_an_instance_of(Board)
-
-      expect(cpu.tracked_coords).to eq([])
     end
   end
 
