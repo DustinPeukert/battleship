@@ -14,4 +14,13 @@ RSpec.describe Player do
       expect(player.board).to eq(player_board)
     end
   end
+  context 'it can use the #place_ship which is already tested' do 
+    it 'can place ship' do
+      player_board = Board.new
+      player = Player.new(player_board)
+      cruiser = Ship.new("Cruiser", 3)  
+      expect(player_board.valid_placement?(cruiser, ["A1", "A2", "A3"])).to be true
+      expect(player.place(cruiser, ["A1", "A2", "A3"])).to be true
+    end
+  end
 end
