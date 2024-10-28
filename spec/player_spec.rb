@@ -37,4 +37,25 @@ RSpec.describe Player do
       expect(opponent_board.cells["A1"].fired_upon?).to be true 
     end   
   end
+
+  describe '#has_lost?' do 
+    it 'returns true if player has lost' do
+      player_board = Board.new
+      player = Player.new(player_board)
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2)
+
+      player.place(cruiser,["A1", "A2", "A3"])
+      player.place(submarine, ["C1", "C2"])
+
+      expect(player.has_lost?).to be false
+
+      player_board.cells.each do |coordinate, cell|
+        if cell.ship
+          cell.fire_upon
+        end
+      end
+      expect(player.has_lost?).to be true
+    end
+  end
 end
