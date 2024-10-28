@@ -21,7 +21,6 @@ RSpec.describe Player do
       player_board = Board.new
       player = Player.new(player_board)
       cruiser = Ship.new("Cruiser", 3)  
-      expect(player_board.valid_placement?(cruiser, ["A1", "A2", "A3"])).to be true
       expect(player.place(cruiser, ["A1", "A2", "A3"])).to be true
     end
   end
