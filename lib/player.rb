@@ -4,4 +4,8 @@ class Player
   def initialize(board)
     @board = board
   end
+
+  def place(ship, coordinates)
+   @board.place(ship, coordinates)
+  end
 end
