@@ -40,7 +40,7 @@ RSpec.describe CPU do
 
         expect(cpu.place_ship(cruiser)).to be true
         expect(cpu.place_ship(submarine)).to be true
-
+        require 'pry'; binding.pry
         placed_cruiser = cpu_board.cells.values.select { |cell| cell.ship == cruiser }
         placed_submarine = cpu_board.cells.values.select { |cell| cell.ship == submarine }
     
@@ -50,7 +50,7 @@ RSpec.describe CPU do
     end
   end
 
-  describe '#choose_coordinate' do ####
+  describe '#choose_coordinate' do 
     it 'chooses a random coordinate from existing board coordinates' do
       cpu_board = Board.new
       cpu = CPU.new(cpu_board)
@@ -59,17 +59,15 @@ RSpec.describe CPU do
       expect(cpu_board.cells.key?(coordinate)).to be true
     end
 
-    it 'tracks already chosen coordinates and won\'t choose them again' do
+    it 'will not re-use coordinates it already chose for that ship' do
       cpu_board = Board.new
       cpu = CPU.new(cpu_board)
 
-      expect(cpu.tracked_coords).to eq([])
-
       16.times do
-        tracked_coords << cpu.choose_coordinate
+        coordinates << cpu.choose_coordinate
       end
 
-      expect(tracked_coords.uniq.size).to eq(16)
+      expect(coordinates.uniq.size).to eq(16)
     end
   end
 
