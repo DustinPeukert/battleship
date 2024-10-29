@@ -1,8 +1,9 @@
 class CPU
-  attr_reader :board, :tracked_coords
+  attr_reader :board
 
   def initialize(board)
     @board = board
+    @fire_options = @board.cells.keys
   end
 
   def place_ship(ship)
@@ -49,6 +50,11 @@ class CPU
       
     end
     @board.place(ship, coordinates)
+  end
+
+  def fire_at(opponent_board)
+    coordinate = @fire_options.delete(@fire_options.sample)
+    opponent_board.cells[coordinate].fire_upon
   end
 end
 
