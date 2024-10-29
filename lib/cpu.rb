@@ -56,5 +56,12 @@ class CPU
     coordinate = @fire_options.delete(@fire_options.sample)
     opponent_board.cells[coordinate].fire_upon
   end
+
+  def has_lost?
+    @board.cells.each do |coordinate, cell|
+      return false if cell.ship && !cell.ship.sunk?
+    end
+    true
+  end
 end
 
