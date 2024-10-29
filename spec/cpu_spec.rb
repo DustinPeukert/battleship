@@ -66,7 +66,7 @@ RSpec.describe CPU do
         cpu = CPU.new(cpu_board)
 
         3.times do
-          cpu.fire_at(player_board, cpu.choose_coordinate)
+          cpu.fire_at(player_board)
         end
 
         number = player_board.cells.count { |coord, cell| cell.fired_upon? == true}
