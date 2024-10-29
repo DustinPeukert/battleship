@@ -23,6 +23,13 @@ RSpec.describe Player do
       cruiser = Ship.new("Cruiser", 3)  
       expect(player.place(cruiser, ["A1", "A2", "A3"])).to be true
     end
+
+    it 'will return false if invalid coordinate' do
+      player_board = Board.new
+      player = Player.new(player_board)
+      cruiser = Ship.new("Cruiser", 3)  
+      expect(player.place(cruiser, ["A1", "A2", "A4"])).to be false
+    end
   end
 
   describe '#fire_at' do
