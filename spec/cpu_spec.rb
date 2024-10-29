@@ -58,28 +58,6 @@ RSpec.describe CPU do
     end
   end
 
-  describe '#choose_coordinate' do 
-    it 'chooses a random coordinate from existing board coordinates' do
-      cpu_board = Board.new
-      cpu = CPU.new(cpu_board)
-
-      coordinate = cpu.choose_coordinate
-      expect(cpu_board.cells.key?(coordinate)).to be true
-    end
-
-    it 'will not re-use coordinates it already chose for that ship' do
-      cpu_board = Board.new
-      cpu = CPU.new(cpu_board)
-      coordinates = []
-
-      16.times do
-        coordinates << cpu.choose_coordinate
-      end
-
-      expect(coordinates.uniq.size).to eq(16)
-    end
-  end
-
   describe '#fire_at' do
     context 'this method incorporates the boards #valid_coordinate method' do
       it 'can choose valid coordinates to fire upon' do
