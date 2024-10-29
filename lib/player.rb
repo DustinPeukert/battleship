@@ -6,10 +6,11 @@ class Player
   end
 
   def place(ship, coordinates)
-   @board.place(ship, coordinates)
+    @board.place(ship, coordinates)
   end
 
   def fire_at(opponent_board, coordinate)
+    return false if !opponent_board.valid_coordinate?(coordinate)
     opponent_board.cells[coordinate].fire_upon
   end
 
