@@ -1,25 +1,32 @@
-input = ""
-  
-while input != 'Go'
-  initial_input = gets.chomp # .chomp removes the newline character automatically added during user input
-  input = initial_input.capitalize # this makes sure that the user can write 'Go any way theyd like as long as it is spelled correctly'
-  
-  if input != 'Go' # this lets the user know they did not enter 'Go'
-    puts "Please type 'Go' to start the game!"
-  end
-end
+require_relative './spec/spec_helper'
 
 #method for main_menu input
+def get_main_menu_input
+  input = ''
 
+  while input != 'p' && input != 'q'
+    input = gets.chomp
+    
+    if input != 'p' && input != 'q'
+      puts 'Enter p to play. Enter q to quit.'
+    elsif input == 'q'
+      exit
+    end
+  end
+end
 #method for player shot input
 
 #method for player placement input
 
 loop do
-#display main_menu
-  #choose play or quit
-  #quit should close the program
-  #play will continue
+  puts "Welcome to BATTLESHIP\n"
+  puts "Enter p to play. Enter q to quit.\n"
+  get_main_menu_input
+#display main_menu - FINISHES
+  #choose play or quit - FINISHED
+  #quit should close the program - FINISHED
+  #play will continue - FINISHED
+
 
 #computer to place its ships
 
