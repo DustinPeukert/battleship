@@ -1,6 +1,5 @@
 require_relative './spec/spec_helper'
 
-#method for main_menu input
 def get_main_menu_input
   input = ''
 
@@ -14,83 +13,125 @@ def get_main_menu_input
     end
   end
 end
-#method for player shot input
 
-#method for player placement input
+def get_coordinate_inputs(ship)
+  loop do
+    input = gets.chomp.split
+    
+    if !@player_board.valid_placement?(ship, input)
+      puts "Those are invalid coordinates. Please try again:\n"
+    elsif @player_board.valid_placement?(ship, input)
+      return input
+    end
+  end
+end
+
+def get_shot_coordinate
+  loop do 
+    input = gets.chomp 
+    
+    if !@cpu_board.valid_coordinate?(input)
+      puts "Please enter a valid coordinate:\n"
+    elsif @cpu_board.valid_coordinate?(input)
+      return input
+    end
+  end
+end
 
 loop do
-  puts "Welcome to BATTLESHIP\n"
+  puts "Welcome to BATTLESHIP"
   puts "Enter p to play. Enter q to quit.\n"
   get_main_menu_input
-#display main_menu - FINISHES
-  #choose play or quit - FINISHED
-  #quit should close the program - FINISHED
-  #play will continue - FINISHED
+  puts " "
 
+  @cpu_board = Board.new
+  cpu = CPU.new(@cpu_board)
 
-#computer to place its ships
+  cpu_cruiser = Ship.new("Cruiser", 3)
+  cpu_sub = Ship.new("Submarine", 2)
 
-#user is prompted to place ships
-#should output short explanation on how to place ships
-  # I have laid out my ships on the grid.
-  # You now need to lay out your two ships.
-  # The Cruiser is three units long and the Submarine is two units long.
-  #   1 2 3 4
-  # A . . . .
-  # B . . . .
-  # C . . . .
-  # D . . . .
-  # Enter the squares for the Cruiser (3 spaces):
+  cpu.place_ship(cpu_cruiser)
+  cpu.place_ship(cpu_sub)
 
-#get user input
-#check that its valid
-#format
-#pass input as argument for player.place
+  @player_board = Board.new
+  player = Player.new(@player_board)
+  tracked_coordinates = []
 
-#prompted to place other ship
-  # Enter the squares for the Cruiser (3 spaces):
-  # > A1 A2 A3
+  player_cruiser = Ship.new("Cruiser", 3)
+  player_sub = Ship.new("Submarine", 2)
 
-  #   1 2 3 4
-  # A S S S .
-  # B . . . .
-  # C . . . .
-  # D . . . .
-  # Enter the squares for the Submarine (2 spaces):
+  puts "I have laid out my ships on the grid."
+  puts "You now need to lay out your two ships."
+  puts "The cruiser is 3 units long and the Submarine is two units long."
+  puts @player_board.render(true)
+  puts "Enter the squares for the Cruiser (3 spaces)"
+  puts "Example: A1 B1 C1"
 
-#get user input
-#check that its valid
-#format
-#pass input as argument for player.place
+  coordinates = get_coordinate_inputs(player_cruiser)
+  puts " "
+  player.place(player_cruiser, coordinates)
 
-#if placement invalid:
-  # Enter the squares for the Submarine (2 spaces):
-  # > C1 C3
-  # Those are invalid coordinates. Please try again:
-  # > A1 B1
-  # Those are invalid coordinates. Please try again:
-  # > C1 D1
+  puts @player_board.render(true)
+  puts "Enter the squares for the Submarine (2 spaces):"
+  puts "Example: C2 D2"
 
-#Main GAME:
+  coordinates = get_coordinate_inputs(player_sub)
+  puts " "
+  player.place(player_sub, coordinates)
 
-#Gameplay Loop
-  #Display boards; player can see own ships, but not cpu's
-  #Player fires
-  #Cpu fires
-  #Shows player shot results
-  #shows cpu shot results
-    #Missed shot
-    #hit shot
-    #sinks a ship
-#It is possible that the user enters a coordinate they have 
-#already fired upon. You need to add something that informs 
-#the user that this is the case. You may choose to either 
-#prompt them again for a coordinate they haven’t fired on, 
-#or let them choose it again and inform them in the results 
-#phase that they selected this coordinate again.
+  loop do
+    puts "=============COMPUTER BOARD============="
+    puts @cpu_board.render(true) # turn this off when done
+    puts " "
+    puts "==============PLAYER BOARD=============="
+    puts @player_board.render(true)
+    
+    puts "Enter the coordinate for your shot:\n"
 
-#Game ends when someone has no ships left
+    player_coordinate = get_shot_coordinate
+    while tracked_coordinates.include?(player_coordinate)
+      puts "Already fired upon. Choose a different coordinate:\n"
+      player_coordinate = get_shot_coordinate
 
-#They should be returned to the main menu and asked to play
-#or quit again
+      if !tracked_coordinates.include?(player_coordinate)
+        break
+      end
+    end
+
+    tracked_coordinates << player_coordinate
+    puts " "
+    player.fire_at(@cpu_board, player_coordinate)
+
+    cpu_coordinate = cpu.fire_at(@player_board)
+
+    if @cpu_board.cells[player_coordinate].render == "M"
+      puts "Your shot on #{player_coordinate} was a miss!"
+    elsif @cpu_board.cells[player_coordinate].render == "X"
+      puts "Your shot on #{player_coordinate} sunk my ship!"
+    elsif @cpu_board.cells[player_coordinate].render == "H"
+      puts "Your shot on #{player_coordinate} hit my ship!"
+    end
+
+    if @player_board.cells[cpu_coordinate].render == "M"
+      puts "My shot on #{cpu_coordinate} was a miss!"
+    elsif @player_board.cells[cpu_coordinate].render == "X"
+      puts "My shot on #{cpu_coordinate} sunk your ship!"
+    elsif @player_board.cells[cpu_coordinate].render == "H" 
+      puts "My shot on #{cpu_coordinate} hit your ship!"
+    end
+
+    puts " "
+
+    if player.has_lost? || cpu.has_lost? 
+      break
+    end
+  end
+
+  if player.has_lost?
+    puts "I am the winner!"
+  elsif cpu.has_lost?
+    puts "You are the winner!"
+  end
+
+  puts " "
 end
