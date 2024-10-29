@@ -41,7 +41,16 @@ RSpec.describe Player do
       player.fire_at(opponent_board, coordinate)
 
       expect(opponent_board.cells["A1"].fired_upon?).to be true 
-    end   
+    end 
+    
+    it 'will return false if coordinate is invalid' do
+      player_board = Board.new
+      player = Player.new(player_board)
+      opponent_board = Board.new
+      invalid_coordinate = "E1"
+    
+      expect(player.fire_at(opponent_board, invalid_coordinate)).to be false
+    end
   end
 
   describe '#has_lost?' do 
