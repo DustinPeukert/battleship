@@ -19,8 +19,8 @@ RSpec.describe CPU do
   end
 
   describe '#place_ship' do
-    context '#place_ship incorporates the boards #valid_placement? method' do
-      it 'can choose valid placement for a ship' do
+    context '#place_ship incorporates boards #valid_placement? method' do
+      it 'can place a ship correctly' do
         cpu_board = Board.new
         cpu = CPU.new(cpu_board)
         cruiser = Ship.new("Cruiser", 3)
@@ -32,7 +32,7 @@ RSpec.describe CPU do
         expect(ship_placed.size).to eq(cruiser.length)
       end
 
-      it 'can do this for multiple ships' do
+      it 'can place many ships correctly' do
         cpu_board = Board.new
         cpu = CPU.new(cpu_board)
         cruiser = Ship.new("Cruiser", 3)
@@ -40,12 +40,20 @@ RSpec.describe CPU do
 
         expect(cpu.place_ship(cruiser)).to be true
         expect(cpu.place_ship(submarine)).to be true
-        require 'pry'; binding.pry
+        
         placed_cruiser = cpu_board.cells.values.select { |cell| cell.ship == cruiser }
         placed_submarine = cpu_board.cells.values.select { |cell| cell.ship == submarine }
     
         expect(placed_cruiser.size).to eq(cruiser.length)
         expect(placed_submarine.size).to eq(submarine.length)
+      end
+
+      it 'returns false if (and only if) the argument is not a ship' do
+        cpu_board = Board.new
+        cpu = CPU.new(cpu_board)
+        cruiser = "Cruiser"
+
+        expect(cpu.place_ship(cruiser)).to be false
       end
     end
   end
@@ -62,6 +70,7 @@ RSpec.describe CPU do
     it 'will not re-use coordinates it already chose for that ship' do
       cpu_board = Board.new
       cpu = CPU.new(cpu_board)
+      coordinates = []
 
       16.times do
         coordinates << cpu.choose_coordinate
