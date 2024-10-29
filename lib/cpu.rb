@@ -55,6 +55,7 @@ class CPU
   def fire_at(opponent_board)
     coordinate = @fire_options.delete(@fire_options.sample)
     opponent_board.cells[coordinate].fire_upon
+    coordinate
   end
 
   def has_lost?
